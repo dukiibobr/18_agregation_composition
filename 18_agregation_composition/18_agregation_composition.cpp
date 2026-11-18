@@ -111,17 +111,7 @@ using namespace std;
 
 
 //1
-class Car {//---------------------------car
-	Body* body;
-	Wheel* wheel[4];
-	Engine* engine;
-	Door* door[4];
-	Headlight* light[2];
-	Driver* driver;
-public:
 
-
-};
 
 enum Type{None,Sedan,HedgeBack,Universal};
 class Body {
@@ -133,14 +123,14 @@ public:
 	void show()const {
 				
 				cout << "type ";
+
 				switch (carType)
 				{
-				case None:cout << "none" << endl;
-				case Sedan:cout<<"sedan"<<endl;
-				case HedgeBack:cout<<"hedgeback"<<endl;
-				case Universal:cout<<"universal "<<endl;
+				case None:cout << "none" << endl;break;
+				case Sedan:cout<<"sedan"<<endl;break;
+				case HedgeBack:cout<<"hedgeback"<<endl;break;
+				case Universal:cout<<"universal "<<endl;break;
 				}
-				cout << endl;
 			}
 };
 
@@ -151,7 +141,7 @@ class Wheel {
 		Wheel():wheelType("-"),quality("-"){}
 		Wheel(string w,string q):wheelType(w),quality(q){}
 		
-		void show() {
+		void show()const {
 			cout << "wheelType: " << wheelType << endl;
 			cout<<"quality: "<<quality<<endl;
 		}
@@ -164,6 +154,10 @@ public:
 	Engine():hp(0),volume(0){}
 	Engine(int h,float v):hp(h),volume(v){}
 	
+	void show()const {
+		cout << "hp: " << hp << endl;
+		cout << "volume: " << volume << endl;
+	}
 };
 
 class Door {
@@ -173,6 +167,10 @@ class Door {
 		Door():color("-"),openingSide("-"){}
 		Door(string c,string o):color(c),openingSide(o){}
 		
+		void show()const {
+			cout << "color: " << color << endl;
+			cout << "openingSide: " << openingSide << endl;
+		}
 };
 
 class Headlight {
@@ -182,6 +180,10 @@ class Headlight {
 		Headlight():color("-"),power(0){}
 		Headlight(string c,int p):color(c),power(p){}
 		
+		void show()const {
+			cout << "color: " << color << endl;
+			cout << "power: " << power << endl;
+		}
 };
 
 class Driver {//agregation 
@@ -193,12 +195,70 @@ class Driver {//agregation
 		Driver():name("-"),surname("-"),age(0),experience(0){}
 		Driver(string n,string s,int a,int e):name(n),surname(s),age(a),experience(e){}
 		
+		void show()const {
+			cout << "name: " << name << endl;
+			cout << "surname: " << surname << endl;
+			cout << "age: " << age << endl;
+			cout << "experience: " << experience << endl;
+		}
 
 };
 
+
+
+class Car {//---------------------------car
+	Body body;
+	Wheel wheel;
+	Engine engine;
+	Door door;
+	Headlight light;
+	Driver* driver;
+public:
+	Car(const Body& b, const Wheel& w, const Engine& e,
+		const Door& d, const Headlight& h, Driver* dr)
+		: body(b), wheel(w), engine(e),
+		door(d), light(h), driver(dr) {}
+
+	void printAll()const {
+		body.show();
+		wheel.show();
+		engine.show();
+		door.show();
+		light.show();
+		if (driver != nullptr)
+			driver->show();
+
+		else
+			cout << "no driver" << endl;
+
+		cout << endl;
+	}
+
+	void removeDriver() {
+		driver = nullptr;
+		cout << "driver removed" << endl << endl;
+	}
+
+	void addDriver(Driver* d) {
+		this->driver = d;
+		cout << "driver added" << endl << endl;
+	}
+};
 int main()
 {
-	//1
+	Body b(Sedan);
+	Wheel w("sports","worn out");
+	Engine e(200, 100);
+	Door d("black", "right");
+	Headlight h("yellow", 20);
+	Driver dr("max", "stirner", 40, 20);
+
+	Car c(b, w, e, d, h, &dr);
+	c.printAll();
+	c.removeDriver();
+	c.printAll();
+	c.addDriver(&dr);
+	c.printAll();
 
 
 
