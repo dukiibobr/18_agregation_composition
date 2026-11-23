@@ -208,23 +208,43 @@ class Driver {//agregation
 
 class Car {//---------------------------car
 	Body body;
-	Wheel wheel;
+	Wheel wheel[4];
 	Engine engine;
-	Door door;
-	Headlight light;
+	Door door[4];
+	Headlight light[2];
 	Driver* driver;
 public:
-	Car(const Body& b, const Wheel& w, const Engine& e,
-		const Door& d, const Headlight& h, Driver* dr)
-		: body(b), wheel(w), engine(e),
-		door(d), light(h), driver(dr) {}
+	Car(const Body& b, const Wheel(& w)[4], const Engine& e,
+		const Door(&d)[4], const Headlight(&h)[2], Driver* dr)
+		: body(b), engine(e),
+		 driver(dr)
+	{
+		for (int  i = 0; i < 4; i++)
+		{
+			wheel[i] = w[i];
+			door[i] = d[i];
+		}
+		for (int  i = 0; i < 2; i++)
+		{
+			light[i] = h[i];
+		}
+	
+	}
 
 	void printAll()const {
 		body.show();
-		wheel.show();
+		for (int i = 0; i < 4; i++)
+		{
+			wheel[i].show();
+			door[i].show();
+		}
+
+		for (int i = 0; i < 2; i++)
+		{
+			light[i].show();
+		}
+
 		engine.show();
-		door.show();
-		light.show();
 		if (driver != nullptr)
 			driver->show();
 
@@ -247,10 +267,27 @@ public:
 int main()
 {
 	Body b(Sedan);
-	Wheel w("sports","worn out");
+	Wheel w[4] = {
+			Wheel("sports", "worn out"),
+	Wheel("sports", "worn out"),
+	Wheel("sports", "worn out"),
+	Wheel("sports", "worn out")
+	};
+
 	Engine e(200, 100);
-	Door d("black", "right");
-	Headlight h("yellow", 20);
+
+	Door d[4] = {
+		 Door("black", "right"),
+	Door("black", "right"),
+	Door("black", "right"),
+	Door("black", "right")
+	};
+
+	Headlight h[2] = {
+			Headlight("yellow", 20),
+	Headlight("yellow", 40)
+	};
+
 	Driver dr("max", "stirner", 40, 20);
 
 	Car c(b, w, e, d, h, &dr);
